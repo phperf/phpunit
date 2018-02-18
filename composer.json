@@ -39,7 +39,7 @@
         "ext-pcre": "*",
         "ext-reflection": "*",
         "ext-spl": "*",
-        "phperf/phpunit-bench-data": "*|^0.0.1"
+        "phperf/phpunit-bench-data": "^0.0.1"
     },
     "config": {
         "platform": {

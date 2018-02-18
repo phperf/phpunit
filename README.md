@@ -6,6 +6,48 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.3.3-8892BF.svg?style=flat-square)](https://php.net/)
 [![Build Status](https://img.shields.io/travis/sebastianbergmann/phpunit/4.8.svg?style=flat-square)](https://phpunit.de/build-status.html)
 
+## This fork
+
+This version of PHPUnit is patched to allow benchmarking mode with PHPUnit tests as a drop-in replacement of standard PHPUnit.
+
+Benchmark is controlled by [`phpunit-bench.json`](https://github.com/phperf/phpunit-bench-data/blob/master/src/Config.php) file in current working dir.
+
+Example:
+```
+{
+  "calcPerformanceIndex": true,
+  "defaultTestConfig": {
+    "skipBenchmark": true,
+    "numIterations": 500
+  },
+  "testConfigs":[
+    {
+      "testCaseNameRegex": "UserTest$",
+      "forceBenchmark": true,
+      "numIterations": 100
+    },
+    {
+      "testNameRegex": "testSomething",
+      "forceBenchmark": true,
+      "numIterations": 1000
+    },
+    {
+      "testCaseNameRegex": "MathTest",
+      "dataNameRegex": "default",
+      "forceBenchmark": true,
+      "numIterations": 10000
+    },
+  ]
+}
+```
+
+## Installation
+
+Download `PHAR` at releases page.
+
+
+# Original README:
+
 ## Installation
 
 We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:

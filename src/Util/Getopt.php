@@ -35,7 +35,8 @@ class PHPUnit_Util_Getopt
         reset($args);
         array_map('trim', $args);
 
-        while (list($i, $arg) = each($args)) {
+        foreach ($args as $i => $arg) {
+        //while (list($i, $arg) = each($args)) {
             if ($arg == '') {
                 continue;
             }

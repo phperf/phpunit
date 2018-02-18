@@ -441,6 +441,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         unset($suite);
         $result->flushListeners();
+        $result->benchmarkSuite->save();
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $this->printer->printResult($result);

@@ -72,6 +72,9 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     protected $codeCoverage;
 
+    /** @var \PHPUnitBenchmarkData\Suite */
+    public $benchmarkSuite;
+
     /**
      * @var bool
      */
@@ -609,6 +612,12 @@ class PHPUnit_Framework_TestResult implements Countable
                 $invoker = new PHP_Invoker;
                 $invoker->invoke(array($test, 'runBare'), array(), $_timeout);
             } else {
+                if (null === $this->benchmarkSuite) {
+                    $this->benchmarkSuite = new \PHPUnitBenchmarkData\Suite();
+                }
+
+                $test->benchmarkSuite = $this->benchmarkSuite;
+
                 $test->runBare();
             }
         } catch (PHPUnit_Framework_AssertionFailedError $e) {

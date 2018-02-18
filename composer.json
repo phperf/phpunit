@@ -38,11 +38,12 @@
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
-        "ext-spl": "*"
+        "ext-spl": "*",
+        "phperf/phpunit-bench-data": "*|^0.0.1"
     },
     "config": {
         "platform": {
-            "php": "5.3.3"
+            "php": "5.4.0"
         }
     },
     "suggest": {

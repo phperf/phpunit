@@ -64,6 +64,9 @@ use Prophecy\Prophet;
  */
 abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
+    /** @var \PHPUnitBenchmarkData\Suite */
+    public $benchmarkSuite;
+
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      * Overwrite this attribute in a child class of TestCase.
@@ -900,17 +903,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $method = $class->getMethod($this->name);
         } catch (ReflectionException $e) {
             $this->fail($e->getMessage());
+            return null;
         }
 
+        $args = array_merge($this->data, $this->dependencyInput);
         try {
             $testResult = $method->invokeArgs(
                 $this,
-                array_merge($this->data, $this->dependencyInput)
+                $args
             );
         } catch (Throwable $_e) {
             $e = $_e;
         } catch (Exception $_e) {
             $e = $_e;
+        }
+
+        $numIterations = $this->benchmarkSuite->getNumIterations(get_class($this), $this->name, $this->dataName);
+        if ($numIterations > 1) {
+            $result = new \PHPUnitBenchmarkData\Result($this->dataName, null, null);
+            $this->benchmarkSuite->addResult($result, $this->name, get_class($this));
         }
 
         if (isset($e)) {
@@ -969,7 +980,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
-                return;
+                if ($numIterations > 1) {
+                    $start = microtime(1);
+                    for ($i = 0; $i < $numIterations - 1; ++$i) {
+                        try {
+                            $method->invokeArgs(
+                                $this,
+                                $args
+                            );
+                        } catch (Throwable $_e) {
+                        } catch (Exception $_e) {
+                        }
+                    }
+                    $timeSpent = microtime(1) - $start;
+                    $result = new \PHPUnitBenchmarkData\Result($this->dataName, $timeSpent, $numIterations);
+                    $this->benchmarkSuite->addResult($result, $this->name, get_class($this));
+                }
+
+                return null;
             } else {
                 throw $e;
             }
@@ -982,6 +1010,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->expectedException
                 )
             );
+        }
+
+        if ($numIterations > 1) {
+            $start = microtime(1);
+            for ($i = 0; $i < $numIterations - 1; ++$i) {
+                $method->invokeArgs(
+                    $this,
+                    $args
+                );
+            }
+            $timeSpent = microtime(1) - $start;
+            $result = new \PHPUnitBenchmarkData\Result($this->dataName, $timeSpent, $numIterations);
+            $this->benchmarkSuite->addResult($result, $this->name, get_class($this));
         }
 
         return $testResult;

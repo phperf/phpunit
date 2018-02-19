@@ -34,12 +34,12 @@
         "sebastian/exporter": "~1.2",
         "sebastian/global-state": "~1.0",
         "sebastian/version": "~1.0",
+        "phperf/phpunit-bench-data": "^0.0.1",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
-        "ext-spl": "*",
-        "phperf/phpunit-bench-data": "^0.0.1"
+        "ext-spl": "*"
     },
     "config": {
         "platform": {

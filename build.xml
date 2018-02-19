@@ -284,6 +284,25 @@
                 <include name="**/*.php"/>
             </fileset>
         </copy>
+
+        <copy todir="${basedir}/build/phar/phperf-phpunit-bench-data">
+            <fileset dir="${basedir}/vendor/phperf/phpunit-bench-data/src">
+                <include name="**/*.php"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${basedir}/build/phar/swaggest-json-schema">
+            <fileset dir="${basedir}/vendor/swaggest/json-schema/src">
+                <include name="**/*.php"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${basedir}/build/phar/swaggest-json-diff">
+            <fileset dir="${basedir}/vendor/swaggest/json-diff/src">
+                <include name="**/*.php"/>
+            </fileset>
+        </copy>
+
     </target>
 
     <target name="-phar-build" depends="-phar-determine-version">
